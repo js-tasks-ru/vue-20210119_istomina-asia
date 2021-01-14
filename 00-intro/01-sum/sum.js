@@ -7,5 +7,6 @@
  */
 export function sum(a, b) {
   // Решение 
-  return a * b; //пытаюсь сделать pull-request! 
+  return a + b;
+
 }

@@ -60,9 +60,16 @@ export const app = new Vue({
 
   computed: {
     meetup() {
-      return this.rawMeetup;
+      return !this.rawMeetup ? {} :
+        Object.assign({}, this.rawMeetup, {
+          coverStyle: this.rawMeetup.imageId
+            ? {
+                '--bg-url': `url(${getMeetupCoverLink(this.rawMeetup)})`,
+              }
+            : {}, 
+        });
     }
-  },
+},
 
   methods: {
     async getData(meetupId) {

@@ -18,6 +18,19 @@ function getMeetupCoverLink(meetup) {
   return `${API_URL}/images/${meetup.imageId}`;
 }
 
+function getLocaleDate(date) {
+  const MONTHS = ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июня', 'июля', 'авг.', 'сен.', 'нояб.', 'дек.'];
+  date = new Date(date);
+  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()} г.`
+}
+
+const getDateOnlyString = (date) => {
+  const YYYY = date.getUTCFullYear();
+  const MM = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const DD = date.getUTCDate().toString().padStart(2, '0');
+  return `${YYYY}-${MM}-${DD}`;
+};
+
 /**
  * Словарь заголовков по умолчанию для всех типов элементов программы
  */
@@ -60,6 +73,7 @@ export const app = new Vue({
 
   computed: {
     meetup() {
+      console.log(this.rawMeetup);
       return !this.rawMeetup ? {} :
         Object.assign({}, this.rawMeetup, {
           coverStyle: this.rawMeetup.imageId
@@ -67,6 +81,8 @@ export const app = new Vue({
                 '--bg-url': `url(${getMeetupCoverLink(this.rawMeetup)})`,
               }
             : {}, 
+          localeDate: getLocaleDate(this.rawMeetup.date),
+          dateOnlyString: getDateOnlyString(new Date(this.rawMeetup.date)),
         });
     }
 },

@@ -3,6 +3,9 @@ import Vue from './vue.esm.browser.js';
 /** URL адрес API */
 const API_URL = 'https://course-vue.javascript.ru/api';
 
+const fetchMeetup = (meetupId) =>
+  fetch(`${API_URL}/meetups/${meetupId}`).then((res) => res.json());
+
 /** ID митапа для примера; используйте его при получении митапа */
 const MEETUP_ID = 6;
 
@@ -48,18 +51,23 @@ export const app = new Vue({
   el: '#app',
 
   data: {
-    //
+    rawMeetup: null,
   },
 
-  mounted() {
-    // Требуется получить данные митапа с API
+  async mounted() {
+    await this.getData(MEETUP_ID);
   },
 
   computed: {
-    //
+    meetup() {
+      return this.rawMeetup;
+    }
   },
 
   methods: {
+    async getData(meetupId) {
+      this.rawMeetup = await fetchMeetup(meetupId);
+    }
     // Получение данных с API предпочтительнее оформить отдельным методом,
     // а не писать прямо в mounted()
   },

@@ -3,6 +3,7 @@ import Vue from './vue.esm.browser.js';
 /** URL адрес API */
 const API_URL = 'https://course-vue.javascript.ru/api';
 
+//получение данных из API
 const fetchMeetup = (meetupId) =>
   fetch(`${API_URL}/meetups/${meetupId}`).then((res) => res.json());
 
@@ -18,13 +19,16 @@ function getMeetupCoverLink(meetup) {
   return `${API_URL}/images/${meetup.imageId}`;
 }
 
+//получение даты вида 8 мая 2020
 function getLocaleDate(date) {
-  const MONTHS = ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июня', 'июля', 'авг.', 'сен.', 'нояб.', 'дек.'];
   date = new Date(date);
+  const MONTHS = ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июня', 'июля', 'авг.', 'сен.', 'нояб.', 'дек.'];
   return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()} г.`
 }
 
+//получение даты для атрибута тега time
 const getDateOnlyString = (date) => {
+  date = new Date(date);
   const YYYY = date.getUTCFullYear();
   const MM = (date.getUTCMonth() + 1).toString().padStart(2, '0');
   const DD = date.getUTCDate().toString().padStart(2, '0');
@@ -72,8 +76,8 @@ export const app = new Vue({
   },
 
   computed: {
+
     meetup() {
-      console.log(this.rawMeetup);
       return !this.rawMeetup ? {} :
         Object.assign({}, this.rawMeetup, {
           coverStyle: this.rawMeetup.imageId
@@ -82,16 +86,28 @@ export const app = new Vue({
               }
             : {}, 
           localeDate: getLocaleDate(this.rawMeetup.date),
-          dateOnlyString: getDateOnlyString(new Date(this.rawMeetup.date)),
+          dateOnlyString: getDateOnlyString(this.rawMeetup.date),
         });
+    },
+
+    agenda() {
+      return this.meetup.agenda && this.meetup.agenda.map(item => {
+          item.icon = `/assets/icons/icon-${agendaItemIcons[item.type]}.svg`;
+          item.title = item.title || agendaItemTitles[item.type]; //установка названия по умолчанию если нужно
+          item.isTalk = item.type === "talk"; //проверка выступление или нет - указывать ли спикера
+          item.period = `${item.startsAt} - ${item.endsAt}`;
+          return item;
+        })
+    },
+
+    noAgenda() {
+      return !this.agenda || !this.agenda.length; //проверка есть ли программа
     }
-},
+  },
 
   methods: {
     async getData(meetupId) {
-      this.rawMeetup = await fetchMeetup(meetupId);
+      this.rawMeetup = await fetchMeetup(meetupId); //метод для получения данных 
     }
-    // Получение данных с API предпочтительнее оформить отдельным методом,
-    // а не писать прямо в mounted()
   },
 });

@@ -8,7 +8,7 @@ const fetchMeetup = (meetupId) =>
   fetch(`${API_URL}/meetups/${meetupId}`).then((res) => res.json());
 
 /** ID митапа для примера; используйте его при получении митапа */
-const MEETUP_ID = 6;
+const MEETUP_ID = 2;
 
 /**
  * Возвращает ссылку на изображение митапа для митапа
@@ -21,9 +21,11 @@ function getMeetupCoverLink(meetup) {
 
 //получение даты вида 8 мая 2020
 function getLocaleDate(date) {
-  date = new Date(date);
-  const MONTHS = ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июня', 'июля', 'авг.', 'сен.', 'нояб.', 'дек.'];
-  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()} г.`
+  return new Date(date).toLocaleString(navigator.language, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
 }
 
 //получение даты для атрибута тега time
@@ -78,7 +80,7 @@ export const app = new Vue({
   computed: {
 
     meetup() {
-      return !this.rawMeetup ? {} :
+      return !this.rawMeetup ? null :
         Object.assign({}, this.rawMeetup, {
           coverStyle: this.rawMeetup.imageId
             ? {
@@ -92,11 +94,12 @@ export const app = new Vue({
 
     agenda() {
       return this.meetup.agenda && this.meetup.agenda.map(item => {
-          item.icon = `/assets/icons/icon-${agendaItemIcons[item.type]}.svg`;
-          item.title = item.title || agendaItemTitles[item.type]; //установка названия по умолчанию если нужно
-          item.isTalk = item.type === "talk"; //проверка выступление или нет - указывать ли спикера
-          item.period = `${item.startsAt} - ${item.endsAt}`;
-          return item;
+          let newItem = Object.assign({}, item);
+          newItem.icon = `/assets/icons/icon-${agendaItemIcons[newItem.type]}.svg`;
+          newItem.title = newItem.title || agendaItemTitles[newItem.type]; //установка названия по умолчанию если нужно
+          newItem.isTalk = newItem.type === "talk"; //проверка выступление или нет - указывать ли спикера
+          newItem.period = `${newItem.startsAt} - ${newItem.endsAt}`;
+          return newItem;
         })
     },
 

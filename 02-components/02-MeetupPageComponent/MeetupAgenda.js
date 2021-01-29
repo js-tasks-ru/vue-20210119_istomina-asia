@@ -25,10 +25,12 @@ export const MeetupAgenda = {
     agenda: {
       type: Array,
       required: true,
-    },
-    noAgenda: {
-      type: Boolean,
-      required: true,
+    }
+  },
+
+  computed: {
+    noAgenda() {
+      return !this.agenda.length; //проверка есть ли программа
     }
   }
 };

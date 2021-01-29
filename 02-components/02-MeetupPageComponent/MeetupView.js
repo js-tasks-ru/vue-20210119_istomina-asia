@@ -18,7 +18,7 @@ export const MeetupView = {
             <h3>Описание</h3>
             <MeetupDescription :description="meetup.description"/>
             <h3>Программа</h3>
-            <MeetupAgenda :agenda="agenda" :noAgenda="noAgenda"/>
+            <MeetupAgenda :agenda="agenda"/>
           </div>
 
           <div class="meetup__aside">
@@ -73,8 +73,5 @@ export const MeetupView = {
       return this.meetup.imageId? getMeetupCoverLink(this.meetup) : null;
     },
 
-    noAgenda() {
-      return !this.agenda || !this.agenda.length; //проверка есть ли программа
-    }
   }
 };

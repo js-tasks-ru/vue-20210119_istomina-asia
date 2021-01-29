@@ -10,7 +10,7 @@ export const MeetupView = {
 
   template: `
     <div>
-      <MeetupCover :coverStyle="coverStyle" :title="meetup.title"/>
+      <MeetupCover :link="coverLink" :title="meetup.title"/>
 
       <div class="container">
         <div class="meetup">
@@ -69,12 +69,8 @@ export const MeetupView = {
         })
     },
 
-    coverStyle() {
-      return this.meetup.imageId
-            ? {
-                '--bg-url': `url(${getMeetupCoverLink(this.meetup)})`,
-              }
-            : {};
+    coverLink() {
+      return this.meetup.imageId? getMeetupCoverLink(this.meetup) : null;
     },
 
     noAgenda() {

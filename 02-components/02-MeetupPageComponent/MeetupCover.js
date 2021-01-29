@@ -4,13 +4,18 @@ export const MeetupCover = {
 </div>`,
 
   props: {
-    coverStyle: {
-      type: Object,
-      required: true,
+    link: {
+      type: String,
     },
     title: {
       type: String,
-      required: true,
+      default: 'Unnamed meetup',
+    }
+  },
+
+  computed: {
+    coverStyle() {
+      return this.link? {'--bg-url': `url(${this.link})`} : {};
     }
   }
 };

@@ -12,26 +12,16 @@ export const MeetupPage = {
   // components
 
   data: {
-    rawMeetup: null,
+    meetup: null,
   },
 
   async mounted() {
     await this.getData(data.MEETUP_ID);
   },
 
-  computed: {
-
-    meetup() {
-      return !this.rawMeetup ? null :
-        Object.assign({}, this.rawMeetup, {
-          localeDate: data.getLocaleDate(this.rawMeetup.date),
-          dateOnlyString: data.getDateOnlyString(this.rawMeetup.date),
-        });
-    },
-  },
   methods: {
     async getData(meetupId) {
-      this.rawMeetup = await data.fetchMeetup(meetupId); //метод для получения данных 
+      this.meetup = await data.fetchMeetup(meetupId); //метод для получения данных 
     }
   },
   components: {

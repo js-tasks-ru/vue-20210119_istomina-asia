@@ -2,7 +2,7 @@ import {agendaItemIcons, agendaItemTitles} from './data.js'
 import { MeetupCover } from './MeetupCover.js';
 import { MeetupDescription } from './MeetupDescription.js';
 import { MeetupAgenda } from './MeetupAgenda.js';
-// import { MeetupInfo } from './MeetupInfo.js';
+import { MeetupInfo } from './MeetupInfo.js';
 import { getMeetupCoverLink } from './data.js';
 
 export const MeetupView = {
@@ -22,20 +22,7 @@ export const MeetupView = {
           </div>
 
           <div class="meetup__aside">
-            <ul class="info-list">
-              <li>
-                <img class="icon info-list__icon" alt="icon" src="/assets/icons/icon-user.svg" />
-                {{ meetup.organizer }}
-              </li>
-              <li>
-                <img class="icon info-list__icon" alt="icon" src="/assets/icons/icon-map.svg" />
-                {{ meetup.place }}
-              </li>
-              <li>
-                <img class="icon info-list__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-                <time :datetime="meetup.dateOnlyString">{{ meetup.localeDate }}</time>
-              </li>
-            </ul>
+            <MeetupInfo :organizer="meetup.organizer" :place="meetup.place" :date="date"/>
           </div>
         </div>
       </div>
@@ -45,6 +32,7 @@ export const MeetupView = {
     MeetupCover,
     MeetupDescription,
     MeetupAgenda,
+    MeetupInfo
   },
 
 
@@ -58,6 +46,9 @@ export const MeetupView = {
   },
 
   computed: {
+    date() {
+      return new Date(this.meetup.date);
+    },
     agenda() {
       return this.meetup.agenda && this.meetup.agenda.map(item => {
           let newItem = Object.assign({}, item);

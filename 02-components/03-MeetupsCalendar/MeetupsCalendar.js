@@ -9,9 +9,9 @@ export const MeetupsCalendar = {
     <div class="rangepicker__calendar">
       <div class="rangepicker__month-indicator">
         <div class="rangepicker__selector-controls">
-          <button class="rangepicker__selector-control-left"></button>
+          <button class="rangepicker__selector-control-left" @click="rewindMonth"></button>
           <div>Июнь 2020</div>
-          <button class="rangepicker__selector-control-right"></button>
+          <button class="rangepicker__selector-control-right" @click="forwardMonth"></button>
         </div>
       </div>
       <div class="rangepicker__date-grid">
@@ -30,7 +30,21 @@ export const MeetupsCalendar = {
     </div>
   </div>`,
 
-  // Пропсы
+  props: {
+    meetups: {
+      type: Array,
+      required: true,
+    }
+  },
+  data() {
+    return {
+      date: null,
+    }
+  },
+  mounted() {
+    this.date = new Date();
+  },
+
 
   // В качестве локального состояния требуется хранить что-то,
   // что позволит определить текущий показывающийся месяц.
@@ -38,5 +52,14 @@ export const MeetupsCalendar = {
 
   // Вычислимые свойства помогут как с получением списка дней, так и с выводом информации
 
-  // Методы понадобятся для переключения между месяцами
+  methods: {
+    rewindMonth() {
+      this.date = new Date(this.date.setMonth(this.date.getMonth() - 1));
+      alert(this.date.getMonth());
+    },
+    forwardMonth() {
+      this.date = new Date(this.date.setMonth(this.date.getMonth() + 1));
+      alert(this.date);
+    }
+  },
 };

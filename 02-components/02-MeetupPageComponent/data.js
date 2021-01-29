@@ -50,3 +50,21 @@ export const agendaItemIcons = {
   afterparty: 'cal-sm',
   other: 'cal-sm',
 };
+
+//получение даты вида 8 мая 2020
+export function getLocaleDate(date) {
+  return new Date(date).toLocaleString(navigator.language, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+//получение даты для атрибута тега time
+export const getDateOnlyString = (date) => {
+  date = new Date(date);
+  const YYYY = date.getUTCFullYear();
+  const MM = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const DD = date.getUTCDate().toString().padStart(2, '0');
+  return `${YYYY}-${MM}-${DD}`;
+};

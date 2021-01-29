@@ -1,4 +1,3 @@
-import {agendaItemIcons, agendaItemTitles} from './data.js'
 import { MeetupCover } from './MeetupCover.js';
 import { MeetupDescription } from './MeetupDescription.js';
 import { MeetupAgenda } from './MeetupAgenda.js';
@@ -50,14 +49,7 @@ export const MeetupView = {
       return new Date(this.meetup.date);
     },
     agenda() {
-      return this.meetup.agenda && this.meetup.agenda.map(item => {
-          let newItem = Object.assign({}, item);
-          newItem.icon = `/assets/icons/icon-${agendaItemIcons[newItem.type]}.svg`;
-          newItem.title = newItem.title || agendaItemTitles[newItem.type]; //установка названия по умолчанию если нужно
-          newItem.isTalk = newItem.type === "talk"; //проверка выступление или нет - указывать ли спикера
-          newItem.period = `${newItem.startsAt} - ${newItem.endsAt}`;
-          return newItem;
-        })
+      return this.meetup.agenda || [];
     },
 
     coverLink() {

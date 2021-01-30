@@ -50,3 +50,5 @@ export const agendaItemIcons = {
   afterparty: 'cal-sm',
   other: 'cal-sm',
 };
+
+

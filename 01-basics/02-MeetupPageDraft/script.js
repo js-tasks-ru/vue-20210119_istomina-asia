@@ -8,7 +8,7 @@ const fetchMeetup = (meetupId) =>
   fetch(`${API_URL}/meetups/${meetupId}`).then((res) => res.json());
 
 /** ID митапа для примера; используйте его при получении митапа */
-const MEETUP_ID = 2;
+const MEETUP_ID = 6;
 
 /**
  * Возвращает ссылку на изображение митапа для митапа

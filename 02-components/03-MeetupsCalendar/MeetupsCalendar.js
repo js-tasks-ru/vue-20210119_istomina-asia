@@ -23,6 +23,8 @@ export const MeetupsCalendar = {
     </div>
   </div>`,
 
+  shedule: {},
+
   props: {
     meetups: {
       type: Array,
@@ -36,6 +38,11 @@ export const MeetupsCalendar = {
   },
   mounted() {
     this.date = new Date((new Date()).setDate(1));
+    this.computeShedule();
+    console.log(this.$options.shedule);
+  },
+  updated() {
+    this.computeShedule();
   },
 
 
@@ -85,7 +92,15 @@ export const MeetupsCalendar = {
       let _date = new Date(this.date);
       let _currentMonth = _date.getMonth();
       this.date = new Date(_date.setMonth(_currentMonth + 1));
-
+    },
+    computeShedule() {
+      this.$options.shedule = {};
+      this.meetups.forEach(meetup => {
+        if (!this.$options.shedule[+meetup.date]) {
+          this.$options.shedule[+meetup.date] = [];
+        }
+        this.$options.shedule[+meetup.date].push(meetup.title)
+      })
     }
   },
 };

@@ -21,7 +21,6 @@ export const MeetupsCalendar = {
     </div>
   </div>`,
 
-  shedule: {},
 
   props: {
     meetups: {
@@ -32,20 +31,23 @@ export const MeetupsCalendar = {
 
   data() {
     return {
-      date: null,
+      date: new Date((new Date()).setDate(1)),
     }
   },
 
-  mounted() {
-    this.date = new Date((new Date()).setDate(1));
-    this.computeShedule();
-  },
-
-  updated() {
-    this.computeShedule();
-  },
-
   computed: {
+
+    shedule() {
+      let shedule = {};
+      this.meetups.forEach(meetup => {
+        if (!shedule[(new Date(meetup.date)).toDateString()]) {
+          shedule[(new Date(meetup.date)).toDateString()] = [];
+        }
+        shedule[(new Date(meetup.date)).toDateString()].push(meetup.title)
+      });
+      console.log('okkk');
+      return shedule;
+    },
 
     month() {
       return this.date? this.date.toLocaleString(navigator.language, {
@@ -73,7 +75,7 @@ export const MeetupsCalendar = {
           isActive: true,
         }
         if (_current.getMonth() != _month) day.isActive = false;
-        if (this.$options.shedule[_current.toDateString()]) day['events'] = this.$options.shedule[_current.toDateString()];
+        if (this.shedule[_current.toDateString()]) day['events'] = this.shedule[_current.toDateString()];
         _current =  new Date(_current.setDate(_current.getDate() + 1))
         result.push(day);
       }
@@ -94,16 +96,8 @@ export const MeetupsCalendar = {
       let _currentMonth = _date.getMonth();
       this.date = new Date(_date.setMonth(_currentMonth + 1));
     },
-
-    computeShedule() {
-      this.$options.shedule = {};
-      this.meetups.forEach(meetup => {
-        if (!this.$options.shedule[(new Date(meetup.date)).toDateString()]) {
-          this.$options.shedule[(new Date(meetup.date)).toDateString()] = [];
-        }
-        this.$options.shedule[(new Date(meetup.date)).toDateString()].push(meetup.title)
-      })
-    }
   },
+
+
 };
 

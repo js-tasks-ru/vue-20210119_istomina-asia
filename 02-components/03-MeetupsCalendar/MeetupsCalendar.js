@@ -18,7 +18,11 @@ export const MeetupsCalendar = {
       </div>
       <div>{{ date }}</div>
       <div class="rangepicker__date-grid">
-      <div class="rangepicker__cell rangepicker__cell_inactive" v-for="day in days">{{ day.num }}</div>
+      <div class="rangepicker__cell rangepicker__cell_inactive" v-for="day in days">{{ day.num }}
+        <template v-if="day.events">
+          <a class="rangepicker__event" v-for="event in day.events">{{ event }}</a>
+        </template>
+      </div>
       </div>
     </div>
   </div>`,
@@ -39,7 +43,8 @@ export const MeetupsCalendar = {
   mounted() {
     this.date = new Date((new Date()).setDate(1));
     this.computeShedule();
-    console.log(this.$options.shedule);
+    console.log(Object.keys(this.$options.shedule));
+    this.meetups.forEach(meetup => console.log((new Date(meetup.date)).toDateString()));
   },
   updated() {
     this.computeShedule();
@@ -74,6 +79,7 @@ export const MeetupsCalendar = {
           num: _current.getDate(),
           date: _current,
         }
+        if (this.$options.shedule[_current.toDateString()]) day['events'] = this.$options.shedule[_current.toDateString()];
         _current =  new Date(_current.setDate(_current.getDate() + 1))
         result.push(day);
       }
@@ -96,10 +102,10 @@ export const MeetupsCalendar = {
     computeShedule() {
       this.$options.shedule = {};
       this.meetups.forEach(meetup => {
-        if (!this.$options.shedule[+meetup.date]) {
-          this.$options.shedule[+meetup.date] = [];
+        if (!this.$options.shedule[(new Date(meetup.date)).toDateString()]) {
+          this.$options.shedule[(new Date(meetup.date)).toDateString()] = [];
         }
-        this.$options.shedule[+meetup.date].push(meetup.title)
+        this.$options.shedule[(new Date(meetup.date)).toDateString()].push(meetup.title)
       })
     }
   },

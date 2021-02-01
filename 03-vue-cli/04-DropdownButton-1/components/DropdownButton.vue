@@ -1,14 +1,22 @@
 <template>
-  <div class="dropdown show">
-    <button type="button" class="button dropdown__toggle dropdown__toggle_icon">
+  <div class="dropdown" :class="{ 'show': showList }">
+    <button type="button" class="button dropdown__toggle dropdown__toggle_icon" @click="toggleView">
       <app-icon icon="coffee" />
-      Заголовок - два
+      {{ text }}
     </button>
 
-    <div class="dropdown__menu show">
-      <button class="dropdown__item dropdown__item_icon" type="button">
+    <div class="dropdown__menu" :class="{ 'show': showList }">
+      <button
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+        class="dropdown__item"
+        :class="'dropdown__item_icon'"
+         type="button"
+         @click="$emit('v-change', setItem(option))"
+      >
         <app-icon icon="coffee" />
-        раз
+        {{ option.text }}
       </button>
       <button class="dropdown__item dropdown__item_icon" type="button">
         <app-icon icon="coffee" />
@@ -26,6 +34,11 @@ export default {
 
   components: { AppIcon },
 
+  model: {
+    prop: 'value',
+    event: 'v-change',
+  },
+
   props: {
     'title': {
       type: String,
@@ -39,13 +52,26 @@ export default {
 
     'value': {
       type: String,
-      required: true,
     }
   },
 
-  model: {
-    prop: 'value',
-    event: 'change',
+  data() {
+    return {
+      showList: false,
+      text: this.title
+    }
+  },
+
+
+  methods: {
+    toggleView() {
+      this.showList = !this.showList;
+    },
+    setItem(option) {
+      this.text = option.text;
+      this.showList = !this.showList;
+      return option.value;
+    }
   }
 };
 </script>

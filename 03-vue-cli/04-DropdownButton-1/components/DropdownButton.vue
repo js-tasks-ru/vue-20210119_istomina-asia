@@ -1,8 +1,15 @@
 <template>
   <div class="dropdown" :class="{ 'show': showList }">
-    <button type="button" class="button dropdown__toggle dropdown__toggle_icon" @click="toggleView">
-      <app-icon icon="coffee" />
-      {{ text }}
+    <button
+      type="button"
+      class="button dropdown__toggle"
+      :class="{ 'dropdown__toggle_icon': hasIcons}"
+      @click="toggleView">
+        <app-icon
+          v-if="hasIcons"
+          icon="coffee"
+        />
+        {{ text }}
     </button>
 
     <div class="dropdown__menu" :class="{ 'show': showList }">
@@ -11,16 +18,12 @@
         :key="option.value"
         :value="option.value"
         class="dropdown__item"
-        :class="'dropdown__item_icon'"
+        :class="{ 'dropdown__item_icon': hasIcons}"
          type="button"
          @click="$emit('v-change', setItem(option))"
       >
-        <app-icon icon="coffee" />
+        <app-icon v-if="hasIcons" icon="coffee" />
         {{ option.text }}
-      </button>
-      <button class="dropdown__item dropdown__item_icon" type="button">
-        <app-icon icon="coffee" />
-        два
       </button>
     </div>
   </div>
@@ -62,6 +65,11 @@ export default {
     }
   },
 
+  computed: {
+    hasIcons() {
+      return this.options.some(item => item.icon);
+    }
+  },
 
   methods: {
     toggleView() {

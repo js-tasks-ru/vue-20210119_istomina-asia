@@ -1,3 +1,9 @@
+/* 
+я бы еще добавила
+-чтобы при клике снару;и выпадающий список обратно закрывался (не знаю что у меня с буквой Ж)
+-чтобы мо;но было опять сделать пункт не выбранным
+-ну и мо;ет быть, чтобы варианты менялись при дви;ении колесиком
+ */
 <template>
   <div class="dropdown" :class="{ 'show': showList }">
     <button
@@ -6,8 +12,8 @@
       :class="{ 'dropdown__toggle_icon': hasIcons}"
       @click="toggleView">
         <app-icon
-          v-if="hasIcons"
-          :icon="icon"
+          v-if="currentOptionWithIcon"
+          :icon="currentOption.icon"
         />
         {{ text }}
     </button>
@@ -61,20 +67,25 @@ export default {
   data() {
     return {
       showList: false,
-      icon: "coffee",
-      textSelected: "",
     }
   },
 
   computed: {
+    currentOption() {
+      return this.options.find(option => option['value'] == this.value)
+    },
     hasIcons() {
-      return this.options.some(item => item.icon);
+      return this.options.some(option => option.icon);
+    },
+    currentOptionWithIcon() {
+      return !!(this.currentOption && this.currentOption.icon);
     },
 
     text() {
-      let description = this.textSelected? ` - ${this.textSelected}` : ``;
+      let description = this.currentOption? ` - ${this.currentOption.text}` : ``;
       return this.title + description;
-    }
+    },
+
   },
 
   methods: {
@@ -83,8 +94,6 @@ export default {
     },
 
     setItem(option) {
-      this.textSelected = option.text;
-      this.icon = option.icon || this.icon;
       this.showList = !this.showList;
       return option.value;
     },

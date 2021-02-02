@@ -7,7 +7,7 @@
       @click="toggleView">
         <app-icon
           v-if="hasIcons"
-          icon="coffee"
+          :icon="icon"
         />
         {{ text }}
     </button>
@@ -20,9 +20,9 @@
         class="dropdown__item"
         :class="{ 'dropdown__item_icon': hasIcons}"
          type="button"
-         @click="$emit('v-change', setItem(option))"
+         @click="$emit('change', setItem(option))"
       >
-        <app-icon v-if="hasIcons" icon="coffee" />
+        <app-icon v-if="hasOwnIcon(option)" :icon="option.icon" />
         {{ option.text }}
       </button>
     </div>
@@ -39,7 +39,7 @@ export default {
 
   model: {
     prop: 'value',
-    event: 'v-change',
+    event: 'change',
   },
 
   props: {
@@ -61,13 +61,19 @@ export default {
   data() {
     return {
       showList: false,
-      text: this.title
+      icon: "coffee",
+      textSelected: "",
     }
   },
 
   computed: {
     hasIcons() {
       return this.options.some(item => item.icon);
+    },
+
+    text() {
+      let description = this.textSelected? ` - ${this.textSelected}` : ``;
+      return this.title + description;
     }
   },
 
@@ -75,12 +81,19 @@ export default {
     toggleView() {
       this.showList = !this.showList;
     },
+
     setItem(option) {
-      this.text = option.text;
+      this.textSelected = option.text;
+      this.icon = option.icon || this.icon;
       this.showList = !this.showList;
       return option.value;
+    },
+
+    hasOwnIcon(option) {
+      return this.hasIcons && option.icon;
     }
-  }
+  },
+
 };
 </script>
 

@@ -7,10 +7,12 @@
         class="content-tabs__tab"
         active-class="content-tabs__tab_active"
         :to="tab.to"
-          >{{ tab.text }}</router-link
-        >
+        >{{ tab.text }}</router-link
+      >
     </div>
-    <slot><router-view class="content-tabs__content" /></slot>
+    <div class="content-tabs__content">
+      <slot><router-view prop="prop" /> </slot>
+    </div>
   </div>
 </template>
 
@@ -22,9 +24,8 @@ export default {
     tabs: {
       type: Array,
       required: true,
-    }
+    },
   },
-
 };
 </script>
 

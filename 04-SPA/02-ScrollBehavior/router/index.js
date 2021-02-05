@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 export function scrollBehavior(to, from, savedPosition) {
   let position = {};
 
-  if (from.meta.saveScrollPosition && to.meta.saveScrollPosition) {
+  if (to.matched.some(route => route.meta && route.meta.saveScrollPosition) && from.matched.some(route => route.meta && route.meta.saveScrollPosition) ) {
     position = false;
 
   } else if (to.hash) {

@@ -11,7 +11,7 @@
       >
     </div>
     <div class="content-tabs__content">
-      <slot><router-view prop="prop" /> </slot>
+      <slot><router-view /> </slot>
     </div>
   </div>
 </template>

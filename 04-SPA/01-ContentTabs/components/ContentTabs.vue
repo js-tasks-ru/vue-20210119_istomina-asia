@@ -10,7 +10,7 @@
           >{{ tab.text }}</router-link
         >
     </div>
-    <router-view class="content-tabs__content" prop="Hello!" />
+    <slot><router-view class="content-tabs__content" /></slot>
   </div>
 </template>
 

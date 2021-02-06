@@ -69,7 +69,7 @@ export default { name: 'TheHeader' };
 }
 
 .header nav a:before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 50%;
@@ -88,7 +88,7 @@ export default { name: 'TheHeader' };
   }
 
   .header nav a,
-  .header nav a + a{
+  .header nav a + a {
     margin-top: 0;
   }
 
@@ -96,5 +96,4 @@ export default { name: 'TheHeader' };
     display: none;
   }
 }
-
 </style>

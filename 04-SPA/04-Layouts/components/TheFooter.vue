@@ -13,8 +13,7 @@ export default { name: 'TheFooter' };
 
 <style scoped>
 .footer {
-    padding: 100px 0 60px;
-    text-align: center;
+  padding: 100px 0 60px;
+  text-align: center;
 }
-
 </style>

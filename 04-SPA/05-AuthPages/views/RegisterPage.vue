@@ -31,12 +31,13 @@
       ></label>
     </div>
     <div class="form__buttons">
-      <button type="submit" class="button button_primary" @click="go()">
+      <button type="submit" class="button button_primary" @click.prevent="go()">
         Зарегистрироваться
       </button>
     </div>
     <div class="form__append">
-      Уже есть аккаунт? <router-link to="/login" class="link">Войдите</router-link>
+      Уже есть аккаунт?
+      <router-link to="/login" class="link">Войдите</router-link>
     </div>
   </form>
 </template>
@@ -79,10 +80,14 @@ export default {
         alert('Требуется согласиться с условиями');
         return;
       }
-      const newUser = await register(this.email, this.fullName, this.password);
-      alert(`Поздравляем вас ${JSON.stringify(newUser)}`);
+      const result = await register(this.email, this.fullName, this.password);
+      if (result.error) {
+        alert(result.message);
+        return;
+      }
+      alert(`Поздравляем вас, пользователь номер ${result.id}`);
     },
-  }
+  },
 };
 </script>
 

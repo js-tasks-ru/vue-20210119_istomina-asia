@@ -85,7 +85,7 @@ export default {
         alert(result.message);
         return;
       }
-      alert(`Поздравляем вас, пользователь номер ${result.id}`);
+      alert(`${result.id}`);
     },
   },
 };

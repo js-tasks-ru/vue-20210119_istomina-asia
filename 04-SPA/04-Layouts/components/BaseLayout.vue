@@ -2,7 +2,7 @@
   <div class="wrapper bg-grey">
     <TheHeader />
     <main class="main">
-      <router-view />
+      <slot />
     </main>
 
     <TheFooter />

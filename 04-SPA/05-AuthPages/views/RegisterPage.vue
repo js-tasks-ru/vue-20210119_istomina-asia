@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form class="form" @submit.prevent="go()">
     <div class="form-group">
       <label class="form-label">Email</label>
       <div class="input-group">
@@ -31,7 +31,7 @@
       ></label>
     </div>
     <div class="form__buttons">
-      <button type="submit" class="button button_primary" @click.prevent="go()">
+      <button type="submit" class="button button_primary">
         Зарегистрироваться
       </button>
     </div>
@@ -85,7 +85,7 @@ export default {
         alert(result.message);
         return;
       }
-      alert(`${result.id}`);
+      alert(result.id);
     },
   },
 };

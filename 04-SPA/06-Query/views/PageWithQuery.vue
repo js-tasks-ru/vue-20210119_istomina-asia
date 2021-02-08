@@ -36,19 +36,6 @@ export default {
   },
 
   computed: {
-    queryView() {
-      return this.$route.query.view;
-    },
-    queryDate() {
-      return this.$route.query.date;
-    },
-    queryParticipation() {
-      return this.$route.query.participation;
-    },
-    querySearch() {
-      return this.$route.query.search;
-    },
-
     view: {
       get() {
         return this.$route.query.view || _default.view;
@@ -59,7 +46,14 @@ export default {
         } else {
           this.route.query.view = value;
         }
-        this.$router.push(this.route);
+        this.$router.push(this.route).catch((error) => {
+          if (error.name === 'NavigationDuplicated') {
+            this.$router.push('');
+            this.$router.push(this.route);
+            return this.route;
+          }
+          throw error;
+        });
       },
     },
     date: {
@@ -72,8 +66,14 @@ export default {
         } else {
           this.route.query.date = value;
         }
-        this.$router.push(this.route);
-        return value;
+        this.$router.push(this.route).catch((error) => {
+          if (error.name === 'NavigationDuplicated') {
+            this.$router.push('');
+            this.$router.push(this.route);
+            return this.route;
+          }
+          throw error;
+        });
       },
     },
     participation: {
@@ -87,8 +87,14 @@ export default {
         } else {
           this.route.query.participation = value;
         }
-        this.$router.push(this.route);
-        return value;
+        this.$router.push(this.route).catch((error) => {
+          if (error.name === 'NavigationDuplicated') {
+            this.$router.push('');
+            this.$router.push(this.route);
+            return this.route;
+          }
+          throw error;
+        });
       },
     },
     search: {
@@ -103,55 +109,40 @@ export default {
         } else {
           this.route.query.search = value;
         }
-        this.$router.push(this.route);
+        this.$router.push(this.route).catch((error) => {
+          if (error.name === 'NavigationDuplicated') {
+            this.$router.push('');
+            this.$router.push(this.route);
+            return this.route;
+          }
+          throw error;
+        });
       },
     },
   },
 
   watch: {
-    queryView: {
+    '$route.query.view': {
       immediate: true,
       handler(value) {
-        if (value === _default.view && this.route.query.view !== undefined) {
-          delete this.route.query.view;
-          return;
-        }
         this.route.query.view = value;
       },
     },
-    queryDate: {
+    '$route.query.date': {
       immediate: true,
       handler(value) {
-        if (value === _default.date && this.route.query.date !== undefined) {
-          delete this.route.query.date;
-          return;
-        }
         this.route.query.date = value;
       },
     },
-    queryParticipation: {
+    '$route.query.participation': {
       immediate: true,
       handler(value) {
-        if (
-          value === _default.participation &&
-          this.route.query.participation !== undefined
-        ) {
-          delete this.route.query.participation;
-          return;
-        }
         this.route.query.participation = value;
       },
     },
-    querySearch: {
+    '$route.query.search': {
       immediate: true,
       handler(value) {
-        if (
-          value === _default.search &&
-          this.route.query.search !== undefined
-        ) {
-          delete this.route.query.search;
-          return;
-        }
         this.route.query.search = value;
       },
     },

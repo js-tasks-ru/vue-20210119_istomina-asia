@@ -1,10 +1,29 @@
 <template>
-  <button></button>
+  <BaseButton :tag="tag" :block="block" class="button_primary"
+    ><slot
+  /></BaseButton>
 </template>
 
 <script>
+import BaseButton from './BaseButton';
+
 export default {
   name: 'PrimaryButton',
+  components: {
+    BaseButton,
+  },
+  props: {
+    block: {
+      type: Boolean,
+    },
+    tag: {
+      type: String,
+      default: `button`,
+      validator(value) {
+        return [`button`, `a`, `router-link`].includes(value);
+      },
+    },
+  },
 };
 </script>
 

@@ -1,14 +1,10 @@
 <template>
   <div class="container">
     <meetups-view
-      :date="date"
-      :participation="participation"
-      :view="view"
-      :search="search"
-      @update:date="updateDate"
-      @update:participation="updateParticipation"
-      @update:view="updateView"
-      @update:search="updateSearch"
+      :date.sync="date"
+      :participation.sync="participation"
+      :view.sync="view"
+      :search.sync="search"
     />
   </div>
 </template>
@@ -148,20 +144,6 @@ export default {
     },
   },
 
-  methods: {
-    updateDate(date) {
-      this.date = date;
-    },
-    updateParticipation(participation) {
-      this.participation = participation;
-    },
-    updateView(view) {
-      this.view = view;
-    },
-    updateSearch(search) {
-      this.search = search;
-    },
-  },
 };
 </script>
 

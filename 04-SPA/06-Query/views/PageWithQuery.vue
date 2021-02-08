@@ -44,13 +44,10 @@ export default {
           let query = Object.assign({}, this.route.query, { view: value });
           this.route = Object.assign({}, { query });
         }
-        this.$router.push(this.route).catch((error) => {
-          if (error.name === 'NavigationDuplicated') {
-            this.$router.push('');
-            this.$router.push(this.route);
-            return this.route;
+        this.$router.push(this.route).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
           }
-          throw error;
         });
       },
     },
@@ -66,13 +63,10 @@ export default {
           let query = Object.assign({}, this.route.query, { date: value });
           this.route = Object.assign({}, { query });
         }
-        this.$router.push(this.route).catch((error) => {
-          if (error.name === 'NavigationDuplicated') {
-            this.$router.push('');
-            this.$router.push(this.route);
-            return this.route;
+        this.$router.push(this.route).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
           }
-          throw error;
         });
       },
     },
@@ -85,16 +79,15 @@ export default {
           if (this.route.query.participation !== undefined)
             this.$delete(this.route.query, 'participation');
         } else {
-          let query = Object.assign({}, this.route.query, { participation: value });
+          let query = Object.assign({}, this.route.query, {
+            participation: value,
+          });
           this.route = Object.assign({}, { query });
         }
-        this.$router.push(this.route).catch((error) => {
-          if (error.name === 'NavigationDuplicated') {
-            this.$router.push('');
-            this.$router.push(this.route);
-            return this.route;
+        this.$router.push(this.route).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
           }
-          throw error;
         });
       },
     },
@@ -111,13 +104,10 @@ export default {
           let query = Object.assign({}, this.route.query, { search: value });
           this.route = Object.assign({}, { query });
         }
-        this.$router.push(this.route).catch((error) => {
-          if (error.name === 'NavigationDuplicated') {
-            this.$router.push('');
-            this.$router.push(this.route);
-            return this.route;
+        this.$router.push(this.route).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
           }
-          throw error;
         });
       },
     },
@@ -141,7 +131,9 @@ export default {
     '$route.query.participation': {
       immediate: true,
       handler(value) {
-        let query = Object.assign({}, this.route.query, { participation: value });
+        let query = Object.assign({}, this.route.query, {
+          participation: value,
+        });
         this.route = Object.assign({}, { query });
       },
     },

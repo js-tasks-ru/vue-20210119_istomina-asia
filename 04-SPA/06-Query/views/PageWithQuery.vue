@@ -38,9 +38,11 @@ export default {
       },
       set(value) {
         if (value === _default.view) {
-          if (this.route.query.view !== undefined) delete this.route.query.view;
+          if (this.route.query.view !== undefined)
+            this.$delete(this.route.query, 'view');
         } else {
-          this.route.query.view = value;
+          let query = Object.assign({}, this.route.query, { view: value });
+          this.route = Object.assign({}, { query });
         }
         this.$router.push(this.route).catch((error) => {
           if (error.name === 'NavigationDuplicated') {
@@ -58,9 +60,11 @@ export default {
       },
       set(value) {
         if (value === _default.date) {
-          if (this.route.query.date !== undefined) delete this.route.query.date;
+          if (this.route.query.date !== undefined)
+            this.$delete(this.route.query, 'date');
         } else {
-          this.route.query.date = value;
+          let query = Object.assign({}, this.route.query, { date: value });
+          this.route = Object.assign({}, { query });
         }
         this.$router.push(this.route).catch((error) => {
           if (error.name === 'NavigationDuplicated') {
@@ -79,9 +83,10 @@ export default {
       set(value) {
         if (value === _default.participation) {
           if (this.route.query.participation !== undefined)
-            delete this.route.query.participation;
+            this.$delete(this.route.query, 'participation');
         } else {
-          this.route.query.participation = value;
+          let query = Object.assign({}, this.route.query, { participation: value });
+          this.route = Object.assign({}, { query });
         }
         this.$router.push(this.route).catch((error) => {
           if (error.name === 'NavigationDuplicated') {
@@ -100,10 +105,11 @@ export default {
       set(value) {
         if (value === _default.search) {
           if (this.route.query.search !== undefined) {
-            delete this.route.query.search;
+            this.$delete(this.route.query, 'search');
           }
         } else {
-          this.route.query.search = value;
+          let query = Object.assign({}, this.route.query, { search: value });
+          this.route = Object.assign({}, { query });
         }
         this.$router.push(this.route).catch((error) => {
           if (error.name === 'NavigationDuplicated') {
@@ -121,29 +127,32 @@ export default {
     '$route.query.view': {
       immediate: true,
       handler(value) {
-        this.route.query.view = value;
+        let query = Object.assign({}, this.route.query, { view: value });
+        this.route = Object.assign({}, { query });
       },
     },
     '$route.query.date': {
       immediate: true,
       handler(value) {
-        this.route.query.date = value;
+        let query = Object.assign({}, this.route.query, { date: value });
+        this.route = Object.assign({}, { query });
       },
     },
     '$route.query.participation': {
       immediate: true,
       handler(value) {
-        this.route.query.participation = value;
+        let query = Object.assign({}, this.route.query, { participation: value });
+        this.route = Object.assign({}, { query });
       },
     },
     '$route.query.search': {
       immediate: true,
       handler(value) {
-        this.route.query.search = value;
+        let query = Object.assign({}, this.route.query, { search: value });
+        this.route = Object.assign({}, { query });
       },
     },
   },
-
 };
 </script>
 

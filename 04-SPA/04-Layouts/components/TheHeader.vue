@@ -8,11 +8,6 @@
       </h1>
     </div>
     <nav>
-      <router-link
-        v-if="$route.matched.some((route) => route.meta.showReturnToMeetups)"
-        :to="{ name: 'meetups' }"
-        >&larr; Вернуться к списку</router-link
-      >
       <router-link to="/login">Вход</router-link>
       <router-link to="/meetups">Митапы</router-link>
       <router-link to="/form">Создать митап</router-link>

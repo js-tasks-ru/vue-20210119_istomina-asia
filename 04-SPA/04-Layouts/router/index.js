@@ -12,6 +12,11 @@ export const router = new VueRouter({
   routes: [
     {
       path: '/',
+      name: 'index',
+      component: MeetupsPage,
+    },
+    {
+      path: '/meetups',
       name: 'meetups',
       component: MeetupsPage,
     },

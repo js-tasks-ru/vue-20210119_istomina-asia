@@ -1,11 +1,5 @@
 <template>
-  <BaseButton
-    :tag="tag"
-    :block="block"
-    class="button_danger"
-    @click="$emit('click', value)"
-    :to="to"
-  >
+  <BaseButton v-bind="$attrs" v-on="$listeners" class="button_danger">
     <slot />
   </BaseButton>
 </template>
@@ -17,21 +11,6 @@ export default {
   name: 'DangerButton',
   components: {
     BaseButton,
-  },
-  props: {
-    block: {
-      type: Boolean,
-    },
-    tag: {
-      type: String,
-      default: `button`,
-      validator(value) {
-        return [`button`, `a`, `router-link`].includes(value);
-      },
-    },
-    to: {
-      type: String,
-    },
   },
 };
 </script>

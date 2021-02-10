@@ -3,8 +3,7 @@
     :is="tag"
     v-bind="$attrs"
     :class="{ button_block: block }"
-    v-on="listeners"
-    :to="to"
+    v-on="$listeners"
     ><slot />
   </component>
 </template>
@@ -23,21 +22,6 @@ export default {
       validator(value) {
         return [`button`, `a`, `router-link`].includes(value);
       },
-    },
-    to: {
-      type: String,
-    },
-  },
-
-  computed: {
-    href() {
-      return this.$attrs.href;
-    },
-    listeners() {
-      return {
-        ...this.$listeners,
-        click: ($event) => this.$emit('click', $event.target.value),
-      };
     },
   },
 };

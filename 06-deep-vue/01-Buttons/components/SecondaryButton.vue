@@ -1,12 +1,7 @@
 <template>
-  <BaseButton
-    :tag="tag"
-    :block="block"
-    class="button_secondary"
-    @click="$emit('click', value)"
-    :to="to"
-    ><slot
-  /></BaseButton>
+  <BaseButton v-bind="$attrs" v-on="$listeners" class="button_secondary">
+    <slot />
+  </BaseButton>
 </template>
 
 <script>
@@ -16,18 +11,6 @@ export default {
   name: 'SecondaryButton',
   components: {
     BaseButton,
-  },
-  props: {
-    block: {
-      type: Boolean,
-    },
-    tag: {
-      type: String,
-      default: `button`,
-      validator(value) {
-        return [`button`, `a`, `router-link`].includes(value);
-      },
-    },
   },
 };
 </script>

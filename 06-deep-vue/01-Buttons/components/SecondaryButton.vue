@@ -1,5 +1,10 @@
 <template>
-  <BaseButton :tag="tag" :block="block" class="button_secondary"
+  <BaseButton
+    :tag="tag"
+    :block="block"
+    class="button_secondary"
+    @click="$emit('click', value)"
+    :to="to"
     ><slot
   /></BaseButton>
 </template>

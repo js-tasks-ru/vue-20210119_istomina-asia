@@ -1,7 +1,13 @@
 <template>
-  <BaseButton :tag="tag" :block="block" class="button_danger"
-    ><slot
-  /></BaseButton>
+  <BaseButton
+    :tag="tag"
+    :block="block"
+    class="button_danger"
+    @click="$emit('click', value)"
+    :to="to"
+  >
+    <slot />
+  </BaseButton>
 </template>
 
 <script>
@@ -22,6 +28,9 @@ export default {
       validator(value) {
         return [`button`, `a`, `router-link`].includes(value);
       },
+    },
+    to: {
+      type: String,
     },
   },
 };

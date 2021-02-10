@@ -26,7 +26,6 @@ export default {
   data() {
     return {
       query: { ...default_ },
-      isChanging: false,
     };
   },
 
@@ -35,16 +34,12 @@ export default {
       immediate: true,
       deep: true,
       handler(value) {
-        if (this.isChanging) return;
-
         this.query = Object.assign({}, default_, value.query);
       },
     },
     query: {
       deep: true,
       handler(value) {
-        this.isChanging = true;
-
         let route = Object.assign({}, { query: Object.assign({}, value) });
 
         for (let key in route.query) {
@@ -52,14 +47,11 @@ export default {
             delete route.query[key];
           }
         }
-        this.$router
-          .push(route)
-          .catch((err) => {
-            if (err.name !== 'NavigationDuplicated') {
-              throw err;
-            }
-          })
-          .finally(() => setTimeout(() => (this.isChanging = false), 0));
+        this.$router.push(route).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
+        });
       },
     },
   },

@@ -1,10 +1,5 @@
 <template>
-  <transition-group
-    name="fade-list"
-    :tag="$attrs.tag"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <transition-group name="fade-list" v-bind="$attrs" v-on="$listeners">
     <slot />
   </transition-group>
 </template>
@@ -12,11 +7,6 @@
 <script>
 export default {
   name: 'FadeTransitionGroup',
-  data() {
-    return {
-      tag: this.$attrs.tag || 'div',
-    };
-  },
 };
 </script>
 

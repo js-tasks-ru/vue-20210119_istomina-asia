@@ -1,6 +1,6 @@
 <template>
   <component v-bind="$attrs" :is="tag" v-on="$listeners">
-    <transition name="fade"> <slot /> </transition
+    <transition name="fade" mode="out-in"> <slot /> </transition
   ></component>
 </template>
 

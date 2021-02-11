@@ -6,7 +6,7 @@ export default {
     let end = this.perPage * this.page;
     if (this.$slots.default) {
       return h('div', this.$slots.default.slice(begin, end));
-    } else return '';
+    } else return h('div');
   },
   props: {
     page: {

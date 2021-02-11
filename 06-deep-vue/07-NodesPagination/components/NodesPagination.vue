@@ -1,16 +1,12 @@
 <script>
-function calc(per, page) {
-  return Array.from({ length: per }, (v, k) => k + per * (page - 1));
-}
 export default {
   name: 'NodesPagination',
   render(h) {
-    return h(
-      'div',
-      calc(this.perPage, this.page).map((i) =>
-        this.$slots.default ? this.$slots.default[i] : '',
-      ),
-    );
+    let begin = this.perPage * (this.page - 1);
+    let end = this.perPage * this.page;
+    if (this.$slots.default) {
+      return h('div', this.$slots.default.slice(begin, end));
+    } else return '';
   },
   props: {
     page: {

@@ -1,16 +1,17 @@
 <template>
-<component
-    :is="tag"
-    v-bind="$attrs"
-    :class="{ button_block: block }"
-    v-on="$listeners"
-    ><slot />
-  </component>
+  <component v-bind="$attrs" :is="tag" v-on="$listeners">
+    <transition name="fade"> <slot /> </transition
+  ></component>
 </template>
 
 <script>
 export default {
   name: 'FadeTransition',
+  data() {
+    return {
+      tag: this.$attrs.tag || 'div',
+    };
+  },
 };
 </script>
 

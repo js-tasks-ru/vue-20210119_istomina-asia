@@ -23,7 +23,7 @@ export default {
   methods: {
     _increment() {
       this.count_ += 1;
-      return this.count + 1;
+      return this.count_;
     },
   },
   watch: {

@@ -4,10 +4,8 @@ function calc(per, page) {
 }
 export default {
   name: 'NodesPagination',
-  render: function (createElement) {
-    for (let i of calc(this['per-page'], this.page)) {
-      return createElement('slot');
-    }
+  render(h) {
+    return h('div', calc(this.perPage, this.page).map(i => this.$slots.default[i]));
   },
   props: {
     page: {

@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <meetups-view
-      :date.sync="date"
-      :participation.sync="participation"
-      :view.sync="view"
-      :search.sync="search"
+      :date.sync="query.date"
+      :participation.sync="query.participation"
+      :view.sync="query.view"
+      :search.sync="query.search"
     />
   </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
 import MeetupsView from '../components/MeetupsView';
 
-const _default = {
+const default_ = {
   view: 'list',
   date: `all`,
   participation: `all`,
@@ -25,123 +25,33 @@ export default {
 
   data() {
     return {
-      route: {
-        query: {},
-      },
+      query: { ...default_ },
     };
   },
 
-  computed: {
-    view: {
-      get() {
-        return this.$route.query.view || _default.view;
-      },
-      set(value) {
-        if (value === _default.view) {
-          if (this.route.query.view !== undefined)
-            this.$delete(this.route.query, 'view');
-        } else {
-          let query = Object.assign({}, this.route.query, { view: value });
-          this.route = Object.assign({}, { query });
-        }
-        this.$router.push(this.route).catch((err) => {
-          if (err.name !== 'NavigationDuplicated') {
-            throw err;
-          }
-        });
-      },
-    },
-    date: {
-      get() {
-        return this.$route.query.date || _default.date;
-      },
-      set(value) {
-        if (value === _default.date) {
-          if (this.route.query.date !== undefined)
-            this.$delete(this.route.query, 'date');
-        } else {
-          let query = Object.assign({}, this.route.query, { date: value });
-          this.route = Object.assign({}, { query });
-        }
-        this.$router.push(this.route).catch((err) => {
-          if (err.name !== 'NavigationDuplicated') {
-            throw err;
-          }
-        });
-      },
-    },
-    participation: {
-      get() {
-        return this.$route.query.participation || _default.participation;
-      },
-      set(value) {
-        if (value === _default.participation) {
-          if (this.route.query.participation !== undefined)
-            this.$delete(this.route.query, 'participation');
-        } else {
-          let query = Object.assign({}, this.route.query, {
-            participation: value,
-          });
-          this.route = Object.assign({}, { query });
-        }
-        this.$router.push(this.route).catch((err) => {
-          if (err.name !== 'NavigationDuplicated') {
-            throw err;
-          }
-        });
-      },
-    },
-    search: {
-      get() {
-        return this.$route.query.search || _default.search;
-      },
-      set(value) {
-        if (value === _default.search) {
-          if (this.route.query.search !== undefined) {
-            this.$delete(this.route.query, 'search');
-          }
-        } else {
-          let query = Object.assign({}, this.route.query, { search: value });
-          this.route = Object.assign({}, { query });
-        }
-        this.$router.push(this.route).catch((err) => {
-          if (err.name !== 'NavigationDuplicated') {
-            throw err;
-          }
-        });
-      },
-    },
-  },
-
   watch: {
-    '$route.query.view': {
+    $route: {
       immediate: true,
+      deep: true,
       handler(value) {
-        let query = Object.assign({}, this.route.query, { view: value });
-        this.route = Object.assign({}, { query });
+        this.query = Object.assign({}, default_, value.query);
       },
     },
-    '$route.query.date': {
-      immediate: true,
+    query: {
+      deep: true,
       handler(value) {
-        let query = Object.assign({}, this.route.query, { date: value });
-        this.route = Object.assign({}, { query });
-      },
-    },
-    '$route.query.participation': {
-      immediate: true,
-      handler(value) {
-        let query = Object.assign({}, this.route.query, {
-          participation: value,
+        let route = Object.assign({}, { query: Object.assign({}, value) });
+
+        for (let key in route.query) {
+          if (route.query[key] === default_[key]) {
+            delete route.query[key];
+          }
+        }
+        this.$router.push(route).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
         });
-        this.route = Object.assign({}, { query });
-      },
-    },
-    '$route.query.search': {
-      immediate: true,
-      handler(value) {
-        let query = Object.assign({}, this.route.query, { search: value });
-        this.route = Object.assign({}, { query });
       },
     },
   },

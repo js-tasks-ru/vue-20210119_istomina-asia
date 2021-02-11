@@ -15,7 +15,7 @@ export const CounterButton = {
   props: {
     count: {
       type: Number,
-      default: 0
+      default: 0,
     }
   },
   methods: {

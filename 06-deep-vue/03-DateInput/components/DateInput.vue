@@ -18,6 +18,19 @@ export default {
   props: {
     // Чтобы value не было в списке $attrs, его можно указать в списке параметров
     value: {},
+    type: {
+      type: String,
+      default: 'date',
+      validator(value) {
+        return ['date', 'time', 'datetime-local'].includes(value);
+      },
+    },
+    valueAsNumber: {
+      type: Number,
+    },
+    valueAsDate: {
+      type: Date,
+    },
   },
 };
 </script>

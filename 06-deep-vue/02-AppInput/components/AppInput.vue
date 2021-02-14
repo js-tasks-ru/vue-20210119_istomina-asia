@@ -18,6 +18,9 @@
 <script>
 export default {
   name: 'AppInput',
+
+  inheritAttrs: false,
+  
   props: {
     small: {
       type: Boolean,

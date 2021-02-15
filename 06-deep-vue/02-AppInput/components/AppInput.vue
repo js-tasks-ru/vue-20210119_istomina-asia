@@ -6,7 +6,7 @@
       :is="tag"
       class="form-control"
       :class="class_"
-      :value.prop="$attrs.value"
+      :value.prop="value"
       v-bind="$attrs"
       v-on="listeners"
     />
@@ -22,6 +22,9 @@ export default {
   inheritAttrs: false,
   
   props: {
+    value: {
+      type: String,
+    },
     small: {
       type: Boolean,
       default: false,

@@ -1,35 +1,12 @@
 <template>
   <AppInput
-    v-if="valueAsNumber"
     v-bind="$attrs"
     v-on="$listeners"
     :type="type"
     :value="formattedDate"
-    :valueAsNumber.prop="valueAsNumber"
-    @change="$emit('update:valueAsNumber', e($event.target.value))"
-    @input="$emit('update:valueAsNumber', e($event.target.value))"
+    @change="updateAll($event.target.value)"
+    @input="updateAll($event.target.value)"
   >
-    <!-- Так можно передать все слоты в дочерний компонент -->
-    <template v-for="slot of Object.keys($slots)" v-slot:[slot]>
-      <slot :name="slot" />
-    </template>
-  </AppInput>
-  <AppInput
-    v-else-if="valueAsDate"
-    v-bind="$attrs"
-    v-on="$listeners"
-    :type="type"
-    :value="formattedDate"
-    :valueAsDate.prop="valueAsDate"
-    @change="$emit('update:valueAsDate', o($event.target.value))"
-    @input="$emit('update:valueAsDate', o($event.target.value))"
-  >
-    <!-- Так можно передать все слоты в дочерний компонент -->
-    <template v-for="slot of Object.keys($slots)" v-slot:[slot]>
-      <slot :name="slot" />
-    </template>
-  </AppInput>
-  <AppInput v-else v-bind="$attrs" v-on="$listeners" :type="type" :value="value">
     <!-- Так можно передать все слоты в дочерний компонент -->
     <template v-for="slot of Object.keys($slots)" v-slot:[slot]>
       <slot :name="slot" />
@@ -53,16 +30,24 @@ function formatToDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-function formatToTime(date) {
+function formatToTime(date, step) {
   let hours = date.getUTCHours();
   let minutes = date.getMinutes();
+  let seconds = '';
+  if (step) {
+    let seconds = date.getSeconds();
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+  }
   if (hours < 10) {
     hours = '0' + hours;
   }
   if (minutes < 10) {
     minutes = '0' + minutes;
   }
-  return `${hours}:${minutes}`;
+  if (!seconds) return `${hours}:${minutes}`;
+  return `${hours}:${minutes}:${seconds}`;
 }
 
 function formatToDateTime(date) {
@@ -76,7 +61,6 @@ export default {
       datee: new Date(),
     };
   },
-
 
   components: { AppInput },
 
@@ -103,25 +87,34 @@ export default {
     },
   },
   methods: {
-    e(value) {
+    updateNumber(value) {
       let date;
-      if (value.match(/^\d\d:\d\d$/)) date = new Date(`1970-01-01 ${value}`);
-      else date = new Date(value)
+      if (value.match(/^\d\d:\d\d$/) || value.match(/^\d\d:\d\d:\d\d$/))
+        date = new Date(`1970-01-01 ${value}`);
+      else date = new Date(value);
       let h = date.getHours();
-      date.setUTCHours(h)
+      date.setUTCHours(h);
       return +date;
     },
-    o(value) {
-      let date = new Date(value)
+    updateDate(value) {
+      let date = new Date(value);
       let h = date.getHours();
-      date.setUTCHours(h)
+      date.setUTCHours(h);
       return date;
+    },
+    updateAll(value) {
+      this.$emit('update:valueAsNumber', this.updateNumber(value));
+      this.$emit('update:valueAsDate', this.updateDate(value));
     },
   },
 
   computed: {
+    step() {
+      return this.$attrs.step && this.$attrs.step % 60;
+    },
     formattedDate() {
       let res;
+      if (!this.valueAsNumber && !this.valueAsDate) return this.value;
       let date = this.valueAsNumber
         ? new Date(this.valueAsNumber)
         : this.valueAsDate;
@@ -130,7 +123,7 @@ export default {
           res = formatToDate(date);
           break;
         case 'time':
-          res = formatToTime(date);
+          res = formatToTime(date, this.step);
           break;
         case 'datetime-local':
           res = formatToDateTime(date);

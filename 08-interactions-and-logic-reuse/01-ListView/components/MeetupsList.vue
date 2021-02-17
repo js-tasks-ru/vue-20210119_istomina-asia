@@ -1,25 +1,20 @@
 <template>
-  <list-view :items="meetupsWithCoverAndBadge">
-    <!--
-    "X" - некоторый элемент списка, полученный из параметров слота.
-    Имя параметра выберите сами и замените X на него в коде ниже.
-
-    <list-view-card
+  <list-view :items="meetupsWithCoverAndBadge" v-slot="meetup">
+     <list-view-card
       tag="router-link"
-      :to="{ name: 'meetup', params: { meetupId: X.id } }"
-      :key="X.id"
-      :title="X.title"
-      :cover="X.cover"
-      :badge="X.badge"
-      :badge-success="X.badgeSuccess"
+      :to="{ name: 'meetup', params: { meetupId: meetup.item.id } }"
+      :key="meetup.item.id"
+      :title="meetup.item.title"
+      :cover="meetup.item.cover"
+      :badge="meetup.item.badge"
+      :badge-success="meetup.item.badgeSuccess"
     >
       <meetup-info
-        :date="X.date"
-        :place="X.place"
-        :organizer="X.organizer"
+        :date="meetup.item.date"
+        :place="meetup.item.place"
+        :organizer="meetup.item.organizer"
       />
     </list-view-card>
-    -->
   </list-view>
 </template>
 

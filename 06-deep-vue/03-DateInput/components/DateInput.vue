@@ -4,8 +4,8 @@
     v-on="$listeners"
     :type="type"
     :value="formattedDate"
-    @change="updateAll($event.target.value)"
-    @input="updateAll($event.target.value)"
+    @input.native="updateAll($event.target)"
+    @change.native="updateAll($event.target)"
   >
     <!-- Так можно передать все слоты в дочерний компонент -->
     <template v-for="slot of Object.keys($slots)" v-slot:[slot]>
@@ -34,8 +34,9 @@ function formatToTime(date, step) {
   let hours = date.getUTCHours();
   let minutes = date.getMinutes();
   let seconds = '';
+  console.log(step);
   if (step) {
-    let seconds = date.getSeconds();
+    seconds = date.getSeconds();
     if (seconds < 10) {
       seconds = '0' + seconds;
     }
@@ -88,19 +89,21 @@ export default {
   },
   methods: {
     updateNumber(value) {
-      let date;
+      /* let date;
       if (value.match(/^\d\d:\d\d$/) || value.match(/^\d\d:\d\d:\d\d$/))
         date = new Date(`1970-01-01 ${value}`);
       else date = new Date(value);
       let h = date.getHours();
       date.setUTCHours(h);
-      return +date;
+      return +date; */
+      return value.valueAsNumber;
     },
     updateDate(value) {
-      let date = new Date(value);
+      /* let date = new Date(value);
       let h = date.getHours();
       date.setUTCHours(h);
-      return date;
+      return date; */
+      return new Date(value.valueAsNumber);
     },
     updateAll(value) {
       this.$emit('update:valueAsNumber', this.updateNumber(value));

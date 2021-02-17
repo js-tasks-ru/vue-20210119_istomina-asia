@@ -7,7 +7,7 @@
     </p>
     <p>
       time with valueAsNumber:
-      <date-input :value-as-number.sync="valueAsNumber" type="time" />
+      <date-input :value-as-number.sync="valueAsNumber" type="time" step="1" />
     </p>
     <p>
       datetime-local with valueAsNumber:

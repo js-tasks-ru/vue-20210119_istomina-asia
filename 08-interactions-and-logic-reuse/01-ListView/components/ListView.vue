@@ -1,9 +1,7 @@
 <template>
   <div class="meetups-list">
-    <slot :items="items">
-      <template v-for="item in items">
-        {{ item }}
-      </template>
+    <slot v-for="item in items" :item="item">
+      {{ item }}
     </slot>
   </div>
 </template>

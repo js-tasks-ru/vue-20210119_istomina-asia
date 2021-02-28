@@ -14,25 +14,29 @@
 </template>
 
 <script>
-import { ImageService } from '../image-service.js';
+import { ImageService } from '../image-service';
 
 export default {
   name: 'ImageUploader',
-  data() {
-    return {
-      status: 'empty',
-      justDeleted: false,
-    };
+
+  model: {
+    event: 'change',
+    prop: 'imageId',
   },
+
   props: {
     imageId: {
       default: null,
     },
   },
-  model: {
-    event: 'change',
-    prop: 'imageId',
+
+  data() {
+    return {
+      status: null,
+      justDeleted: false,
+    };
   },
+
   computed: {
     statusText() {
       let text = '';
@@ -82,13 +86,24 @@ export default {
       return;
     },
   },
+
+  created() {
+    if (this.imageId) this.status = 'uploaded';
+    else this.status = 'empty';
+  },
+
   methods: {
     async setImage(event) {
       let file = event.target.files[0];
+      let lastStatus = this.status;
       this.status = 'uploading';
       let image;
-      image = await ImageService.uploadImage(file);
-      this.$emit('change', image.id);
+      try {
+        image = await ImageService.uploadImage(file);
+        this.$emit('change', image.id);
+      } catch (e) {
+        this.status = lastStatus;
+      }
     },
     deleteImage() {
       if (this.status != 'uploaded') return;

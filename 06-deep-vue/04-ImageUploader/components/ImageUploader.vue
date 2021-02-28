@@ -8,6 +8,7 @@
         class="form-control-file"
         @change="setImage($event)"
         :disabled="inputDisabled"
+        ref="input"
       />
     </label>
   </div>
@@ -32,8 +33,7 @@ export default {
 
   data() {
     return {
-      status: null,
-      justDeleted: false,
+      status: this.imageId ? 'uploaded' : 'empty',
     };
   },
 
@@ -75,7 +75,7 @@ export default {
     },
 
     inputDisabled() {
-      return this.status != 'empty' || this.justDeleted;
+      return this.status != 'empty';
     },
   },
 
@@ -85,11 +85,6 @@ export default {
       else this.status = 'empty';
       return;
     },
-  },
-
-  created() {
-    if (this.imageId) this.status = 'uploaded';
-    else this.status = 'empty';
   },
 
   methods: {
@@ -105,11 +100,12 @@ export default {
         this.status = lastStatus;
       }
     },
-    deleteImage() {
+
+    deleteImage(event) {
       if (this.status != 'uploaded') return;
+      event.preventDefault();
       this.$emit('change', null);
-      this.justDeleted = true;
-      setTimeout(() => (this.justDeleted = false), 50);
+      this.$refs.input.value = null;
     },
   },
 };

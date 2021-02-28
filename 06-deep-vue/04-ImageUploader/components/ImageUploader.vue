@@ -1,24 +1,113 @@
 <template>
   <div class="image-uploader">
-    <label
-      class="image-uploader__preview image-uploader__preview-loading"
-      :style="`--bg-image: url('https://course-vue.javascript.ru/api/images/1')`"
-    >
-      <span>Удалить изображение</span>
+    <label :class="statusClass" :style="bgStyle" @click="deleteImage($event)">
+      <span>{{ statusText }}</span>
       <input
         type="file"
         accept="image/*"
         class="form-control-file"
+        @change="setImage($event)"
+        :disabled="inputDisabled"
+        ref="input"
       />
     </label>
   </div>
 </template>
 
 <script>
-// import { ImageService } from '../image-service';
+import { ImageService } from '../image-service';
 
 export default {
   name: 'ImageUploader',
+
+  model: {
+    event: 'change',
+    prop: 'imageId',
+  },
+
+  props: {
+    imageId: {
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      status: this.imageId ? 'uploaded' : 'empty',
+    };
+  },
+
+  computed: {
+    statusText() {
+      let text = '';
+      switch (this.status) {
+        case 'empty':
+          text = 'Загрузить изображение';
+          break;
+        case 'uploading':
+          text = 'Загрузка...';
+          break;
+        case 'uploaded':
+          text = 'Удалить изображение';
+          break;
+      }
+      return text;
+    },
+    bgStyle() {
+      return ImageService.getImageURL(this.imageId)
+        ? { '--bg-image': `url(${ImageService.getImageURL(this.imageId)})` }
+        : false;
+    },
+    statusClass() {
+      let text = '';
+      switch (this.status) {
+        case 'empty':
+          text = '';
+          break;
+        case 'uploading':
+          text = 'image-uploader__preview-loading';
+          break;
+        case 'uploaded':
+          text = 'image-uploader__preview';
+          break;
+      }
+      return text;
+    },
+
+    inputDisabled() {
+      return this.status != 'empty';
+    },
+  },
+
+  watch: {
+    imageId(value) {
+      if (value) this.status = 'uploaded';
+      else this.status = 'empty';
+      return;
+    },
+  },
+
+  methods: {
+    async setImage(event) {
+      let file = event.target.files[0];
+      let lastStatus = this.status;
+      this.status = 'uploading';
+      let image;
+      try {
+        image = await ImageService.uploadImage(file);
+        this.$emit('change', image.id);
+      } catch (e) {
+        this.status = lastStatus;
+      }
+    },
+
+    deleteImage(event) {
+      if (this.status != 'uploaded') return;
+      event.preventDefault();
+      this.$emit('change', null);
+      this.$refs.input.value = null;
+    },
+  },
 };
 </script>
 

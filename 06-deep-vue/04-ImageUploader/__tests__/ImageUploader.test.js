@@ -59,6 +59,7 @@ describe('deep-vue/ImageUploader', () => {
 
       await flushPromises();
       await wrapper.vm.$nextTick();
+      await wrapper.setProps({ imageId: mockID });
 
       expect(label.text()).not.toBe('Загрузка...');
       expect(input.element.disabled).toBe(false);

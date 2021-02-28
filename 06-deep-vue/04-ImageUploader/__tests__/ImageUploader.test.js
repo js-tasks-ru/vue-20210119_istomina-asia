@@ -49,20 +49,18 @@ describe('deep-vue/ImageUploader', () => {
       expect(label.text()).toBe('Загрузить изображение');
     });
 
-    it('ImageUploader должен переходить в состояние загрузки после выбора изображения, выводить "Загрузка..." и переводить input в состояние disabled', async () => {
+    it('ImageUploader должен переходить в состояние загрузки, выводить "Загрузка..." после выбора изображения на время загрузки', async () => {
       value = '/fake_path/image.png';
       getFiles.mockReturnValue([new File([], 'image.png')]);
 
       await input.trigger('change');
       expect(label.text()).toBe('Загрузка...');
-      expect(input.element.disabled).toBe(true);
 
       await flushPromises();
       await wrapper.vm.$nextTick();
       await wrapper.setProps({ imageId: mockID });
 
       expect(label.text()).not.toBe('Загрузка...');
-      expect(input.element.disabled).toBe(false);
     });
 
     it('ImageUploader должен порождать событие change с ID изображения после загрузки изображения', async () => {

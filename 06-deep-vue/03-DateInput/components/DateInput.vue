@@ -34,7 +34,6 @@ function formatToTime(date, step) {
   let hours = date.getUTCHours();
   let minutes = date.getMinutes();
   let seconds = '';
-  console.log(step);
   if (step) {
     seconds = date.getSeconds();
     if (seconds < 10) {

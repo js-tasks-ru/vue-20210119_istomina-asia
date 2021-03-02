@@ -1,49 +1,50 @@
 <script>
-/*  */
+function cloneVNode(vnode, constructor) {
+  const cloned = new constructor(
+    vnode.tag,
+    vnode.data,
+    // #7975
+    // clone children array to avoid mutating original in case of cloning
+    // a child.
+    vnode.children && vnode.children.slice(),
+    vnode.text,
+    vnode.elm,
+    vnode.context,
+    vnode.componentOptions,
+    vnode.asyncFactory,
+  );
+  cloned.ns = vnode.ns;
+  cloned.isStatic = vnode.isStatic;
+  cloned.key = vnode.key;
+  cloned.isComment = vnode.isComment;
+  cloned.fnContext = vnode.fnContext;
+  cloned.fnOptions = vnode.fnOptions;
+  cloned.fnScopeId = vnode.fnScopeId;
+  cloned.asyncMeta = vnode.asyncMeta;
+  cloned.isCloned = true;
+  return cloned;
+}
 export default {
   name: 'FadeTransitionGroup',
 
   render: function (createElement) {
-    let a = createElement('p', '');
-    let VNode = a.__proto__.constructor;
-    function cloneVNode(vnode) {
-      const cloned = new VNode(
-        vnode.tag,
-        vnode.data,
-        // #7975
-        // clone children array to avoid mutating original in case of cloning
-        // a child.
-        vnode.children && vnode.children.slice(),
-        vnode.text,
-        vnode.elm,
-        vnode.context,
-        vnode.componentOptions,
-        vnode.asyncFactory,
-      );
-      cloned.ns = vnode.ns;
-      cloned.isStatic = vnode.isStatic;
-      cloned.key = vnode.key;
-      cloned.isComment = vnode.isComment;
-      cloned.fnContext = vnode.fnContext;
-      cloned.fnOptions = vnode.fnOptions;
-      cloned.fnScopeId = vnode.fnScopeId;
-      cloned.asyncMeta = vnode.asyncMeta;
-      cloned.isCloned = true;
-      return cloned;
-    }
-    let transitionGroup = cloneVNode(
-      createElement(
-        'transition-group',
-        { attrs: Object.assign({ name: 'fade-list' }, this.$attrs) },
-        this.$slots.default,
-      ),
+    let transitionGroupElement = createElement(
+      'transition-group',
+      { attrs: Object.assign({ name: 'fade-list' }, this.$attrs) },
+      this.$slots.default,
     );
+
+    let VNode = transitionGroupElement.__proto__.constructor;
+
+    let transitionGroup = cloneVNode(transitionGroupElement, VNode);
+
     let slots_ = transitionGroup.context.$slots.default;
     for (let slot of slots_) {
       slot.data.class = slot.data.class
         ? Object.assign(slot.data.class, { 'fade-list-item': true })
         : { 'fade-list-item': true };
     }
+
     transitionGroup.data.class = 'fade-list';
     return transitionGroup;
   },

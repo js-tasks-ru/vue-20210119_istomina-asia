@@ -40,9 +40,9 @@ export default {
 
     let slots_ = transitionGroup.context.$slots.default;
     for (let slot of slots_) {
-      slot.data.class = slot.data.class
-        ? Object.assign(slot.data.class, { 'fade-list-item': true })
-        : { 'fade-list-item': true };
+      slot.data.staticClass = slot.data.staticClass
+        ? slot.data.staticClass + ' fade-list-item'
+        : 'fade-list-item';
     }
 
     transitionGroup.data.class = 'fade-list';

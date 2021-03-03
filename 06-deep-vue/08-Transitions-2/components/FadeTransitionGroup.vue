@@ -45,7 +45,9 @@ export default {
         : 'fade-list-item';
     }
 
-    transitionGroup.data.class = 'fade-list';
+    transitionGroup.data.staticClass = transitionGroup.data.staticClass
+      ? transitionGroup.data.staticClass + ' fade-list'
+      : 'fade-list';
     return transitionGroup;
   },
 };

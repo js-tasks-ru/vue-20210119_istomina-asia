@@ -19,12 +19,12 @@ export default {
   inheritAttrs: false,
 
   model: {
-    prop: 'mod',
+    prop: 'checked',
     event: 'change',
   },
 
   props: {
-    mod: {},
+    checked: {},
     value: String,
   },
 
@@ -34,7 +34,7 @@ export default {
         this.$emit('change', value);
       },
       get() {
-        return this.mod;
+        return this.checked;
       },
     },
     listeners() {

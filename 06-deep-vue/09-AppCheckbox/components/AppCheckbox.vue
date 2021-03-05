@@ -2,9 +2,8 @@
   <label class="checkbox">
     <input
       type="checkbox"
-      :value.prop="$attrs.value"
-      ref="input"
-      :checked.prop="checkedOrNot"
+      v-model="calcMod"
+      :value="value"
       v-bind="$attrs"
       v-on="listeners"
     />
@@ -17,7 +16,7 @@
 export default {
   name: 'AppCheckbox',
 
-inheritAttrs: false,
+  inheritAttrs: false,
 
   model: {
     prop: 'mod',
@@ -26,45 +25,24 @@ inheritAttrs: false,
 
   props: {
     mod: {},
-  },
-
-  mounted() {
-    if (this.$attrs.checked === "") {
-      this.$emit('change', this.calc())
-    }
+    value: String,
   },
 
   computed: {
-    checkedOrNot() {
-      if (this.$attrs.checked === "") return true;
-      if (Array.isArray(this.mod)) {
-        return  this.mod.includes(this.$attrs.value)
-      } else return this.mod;
+    calcMod: {
+      set(value) {
+        this.$emit('change', value);
+      },
+      get() {
+        return this.mod;
+      },
     },
     listeners() {
-      return {
-        ...this.$listeners,
-        change: () => this.$emit('change', this.calc()),
-      };
+      let _listeners = Object.assign({}, this.$listeners);
+      delete _listeners.change;
+      return _listeners;
     },
   },
-
-  methods: {
-    calc() {
-      let _checked = this.$refs.input.checked;
-      if (Array.isArray(this.mod)) {
-        let val = this.$attrs.value;
-        if (_checked) return this.mod.concat(val);
-        else {
-          let arr = this.mod.slice();
-          arr.splice(this.mod.indexOf(val), 1);
-          return arr;
-        }
-      }
-      return _checked;
-    },
-  },
-
 };
 </script>
 

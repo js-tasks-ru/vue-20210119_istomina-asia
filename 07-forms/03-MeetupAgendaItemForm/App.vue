@@ -22,8 +22,8 @@ export default {
     return {
       agendaItem: {
         id: 0,
-        startsAt: '00:00',
-        endsAt: '00:00',
+        startsAt: '05:00',
+        endsAt: '10:00',
         type: 'other',
         title: null,
         description: null,

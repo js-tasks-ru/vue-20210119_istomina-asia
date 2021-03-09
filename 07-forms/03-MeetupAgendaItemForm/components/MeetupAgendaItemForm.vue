@@ -153,7 +153,8 @@ export default {
     localAgendaItem: {
       deep: true,
       handler(value) {
-        this.$emit('update:agendaItem', value);
+        let clone = { ...value };
+        this.$emit('update:agendaItem', clone);
       },
     },
     startTime(value) {

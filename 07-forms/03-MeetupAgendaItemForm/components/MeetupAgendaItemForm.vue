@@ -158,7 +158,6 @@ export default {
       },
     },
     startTime(value) {
-      if (!this.duration) return;
       this.localAgendaItem.endsAt = new Date(
         getMillisecondsFromString(value) + this.duration,
       )
@@ -168,8 +167,8 @@ export default {
     endTime: {
       immediate: true,
       handler() {
-        let start = getMillisecondsFromString(this.agendaItem.startsAt);
-        let end = getMillisecondsFromString(this.agendaItem.endsAt);
+        let start = getMillisecondsFromString(this.localAgendaItem.startsAt);
+        let end = getMillisecondsFromString(this.localAgendaItem.endsAt);
         if (end < start) {
           end += DAY_IN_MILLISECONDS;
         }

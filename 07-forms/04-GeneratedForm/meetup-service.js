@@ -1,3 +1,14 @@
+export const DAY_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
+export const HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
+export const MINUTE_IN_MILLISECONDS = 60 * 1000;
+
+export function getMillisecondsFromString(string) {
+  let hours = parseInt(string.slice(0, 2));
+  let minutes = parseInt(string.slice(3));
+
+  return hours * HOUR_IN_MILLISECONDS + minutes * MINUTE_IN_MILLISECONDS;
+}
+
 export const getAgendaItemTypes = () => [
   { value: 'registration', text: 'Регистрация' },
   { value: 'opening', text: 'Открытие' },

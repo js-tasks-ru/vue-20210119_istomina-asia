@@ -13,7 +13,7 @@
 
     <hr />
 
-    <app-pagination :page="page" :per-page="5" :items="cards">
+    <app-pagination :page="page" :per-page="5" :items="cards" v-slot="{ item }">
       <!-- item - параметр слота с данными одного элемента данных  -->
       <!-- Вы можете использовать другое имя параметра слота -->
       <fieldset :key="item.id">

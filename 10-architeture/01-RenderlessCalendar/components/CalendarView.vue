@@ -1,25 +1,32 @@
 <template>
-  <renderless-calendar class="rangepicker">
+  <renderless-calendar
+    class="rangepicker"
+    v-slot="{ currentMonth, days, rewindMonth, forwardMonth }"
+  >
     <div class="rangepicker__calendar">
       <div class="rangepicker__month-indicator">
         <div class="rangepicker__selector-controls">
-          <button class="rangepicker__selector-control-left"></button>
-          <div>Январь 2021</div>
-          <button class="rangepicker__selector-control-right"></button>
+          <button
+            class="rangepicker__selector-control-left"
+            @click="rewindMonth"
+          ></button>
+          <div>{{ currentMonth }}</div>
+          <button
+            class="rangepicker__selector-control-right"
+            @click="forwardMonth"
+          ></button>
         </div>
       </div>
       <div class="rangepicker__date-grid">
-        <div class="rangepicker__cell rangepicker__cell_inactive">28</div>
-        <div class="rangepicker__cell rangepicker__cell_inactive">29</div>
-        <div class="rangepicker__cell rangepicker__cell_inactive">30</div>
-        <div class="rangepicker__cell rangepicker__cell_inactive">31</div>
-        <div class="rangepicker__cell">
-          1
-          <a class="rangepicker__event">Митап</a>
-          <a class="rangepicker__event">Митап</a>
+        <div
+          class="rangepicker__cell"
+          :class="{ rangepicker__cell_inactive: !day.isActive }"
+          v-for="day in days"
+          :key="day.date"
+        >
+          {{ day.num }}
+          <slot :date="day.date"> </slot>
         </div>
-        <div class="rangepicker__cell">2</div>
-        <div class="rangepicker__cell">3</div>
       </div>
     </div>
   </renderless-calendar>

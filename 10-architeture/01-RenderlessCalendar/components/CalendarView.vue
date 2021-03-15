@@ -1,7 +1,6 @@
 <template>
   <renderless-calendar
     class="rangepicker"
-    month="05 20"
     v-slot="{ currentMonth, days, rewindMonth, forwardMonth }"
   >
     <div class="rangepicker__calendar">

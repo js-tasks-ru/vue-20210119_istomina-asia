@@ -5,10 +5,7 @@
  * @return {Date} - первый день указаного месяца
  */
 function getDateFromMonthString(monthString) {
-  return new Date(
-            +monthString.substr(3, 2) + 2000,
-            +monthString.substr(0, 2) - 1,
-          )
+  return new Date(monthString);
 }
 /**
  * Возвращает следующий день после текущего
@@ -70,7 +67,7 @@ export default {
       default: null,
       validator(value) {
         let arr = Array.from({ length: 12 }, (v, k) => k + 1);
-        return arr.includes(+value.substr(0, 2)) && !isNaN(+value.substr(3, 2));
+        return arr.includes(+value.substr(5, 2)) && !isNaN(+value.substr(0, 4));
       },
     },
   },
